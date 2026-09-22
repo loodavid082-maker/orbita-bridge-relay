@@ -91,6 +91,18 @@ function mcpTools() {
       description:"Runs one already-created governed manifest by manifest_id. Relay accepts no command, shell, executable, path, host, port, or deployment target.",
       inputSchema:{type:"object",properties:{manifest_id:idSchema},required:["manifest_id"],additionalProperties:false},
       annotations:{readOnlyHint:false,destructiveHint:true,idempotentHint:false,openWorldHint:false}
+    },
+    {
+      name:"orbita_verify",
+      description:"Read-only. Returns verification evidence for one existing governed manifest by manifest_id. Relay accepts no path, URL, host, port, command, shell, or execution target.",
+      inputSchema:{type:"object",properties:{manifest_id:idSchema},required:["manifest_id"],additionalProperties:false},
+      annotations:{readOnlyHint:true,destructiveHint:false,idempotentHint:true,openWorldHint:false}
+    },
+    {
+      name:"orbita_audit",
+      description:"Read-only. Returns audit evidence for one existing governed manifest by manifest_id. Relay accepts no path, URL, host, port, command, shell, or execution target.",
+      inputSchema:{type:"object",properties:{manifest_id:idSchema},required:["manifest_id"],additionalProperties:false},
+      annotations:{readOnlyHint:true,destructiveHint:false,idempotentHint:true,openWorldHint:false}
     }
   ];
 }
@@ -147,6 +159,10 @@ async function handleMcp(body) {
       result=await sendBridgeRequest("execution.plan",args);
     } else if (name === "orbita_execution_run") {
       result=await sendBridgeRequest("execution.run",args);
+    } else if (name === "orbita_verify") {
+      result=await sendBridgeRequest("execution.verify",args);
+    } else if (name === "orbita_audit") {
+      result=await sendBridgeRequest("execution.audit",args);
     } else {
       return {jsonrpc:"2.0",id,error:{code:-32601,message:"Unknown tool"}};
     }
