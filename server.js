@@ -61,7 +61,7 @@ function sendBridgeRequest(action, args={}) {
     const timer = setTimeout(() => {
       pending.delete(requestId);
       resolve({ok:false,code:"BRIDGE_TIMEOUT",bridge_id:bridgeId,request_id:requestId});
-    }, 10000);
+    }, 35000);
     pending.set(requestId,{resolve,timer,bridgeId});
     ws.send(JSON.stringify({type:"relay.request",request_id:requestId,action,args}));
   });
