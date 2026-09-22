@@ -53,6 +53,12 @@ function mcpTools() {
       annotations:{readOnlyHint:true,destructiveHint:false,idempotentHint:true,openWorldHint:false}
     },
     {
+      name:"orbita_approve",
+      description:"Records approval for an existing proposal through the Local Bridge. Approval does not grant execution authorization and does not execute a plan.",
+      inputSchema:{type:"object",properties:{proposal_id:idSchema},required:["proposal_id"],additionalProperties:false},
+      annotations:{readOnlyHint:false,destructiveHint:false,idempotentHint:true,openWorldHint:false}
+    },
+    {
       name:"orbita_execution_request",
       description:"Controlled execution gate request. Binds an already-approved proposal to an exact SHA-256 plan digest. Does not authorize or execute it.",
       inputSchema:{type:"object",properties:{proposal_id:idSchema,plan_digest:digestSchema},required:["proposal_id","plan_digest"],additionalProperties:false},
@@ -131,6 +137,8 @@ async function handleMcp(body) {
       result=await sendBridgeRequest("diagnose",{});
     } else if (name === "orbita_propose") {
       result=await sendBridgeRequest("propose",{});
+    } else if (name === "orbita_approve") {
+      result=await sendBridgeRequest("approval",args);
     } else if (name === "orbita_execution_request") {
       result=await sendBridgeRequest("execution.request",args);
     } else if (name === "orbita_execution_authorize") {
